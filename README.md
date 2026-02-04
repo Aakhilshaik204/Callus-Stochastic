@@ -21,6 +21,32 @@ An enterprise-grade **Retrieval-Augmented Generation (RAG)** AI agent capable of
 
 ---
 
+## 🔍 Architecture
+
+```mermaid
+graph TD
+    subgraph Ingestion_Pipeline [Ingestion Pipeline]
+        PDF[PDF Documents] --> |pypdf| Text[Raw Text]
+        Text --> |Chunking| Chunks[Text Chunks 500 chars]
+        Chunks --> |text-embedding-004| Vectors[Embeddings]
+        Vectors --> |Upsert| Chroma[(ChromaDB)]
+    end
+
+    subgraph RAG_Flow [RAG & Inference]
+        User[User Query] --> |Embed| QVec[Query Vector]
+        QVec --> |Search top-k| Chroma
+        Chroma --> |Retrieve| Context[Relevant Context]
+        Context --> |Prompt| LLM[Gemini 3 Flash]
+        User --> |Prompt| LLM
+        LLM --> |Generate| Answer[Final Answer]
+    end
+    
+    subgraph Agentic_Tools [Tools]
+        LLM -.-> |Function Call| Arxiv[Arxiv API]
+        Arxiv -.-> |Return Papers| LLM
+    end
+```
+
 ## 📂 Project Structure
 
 A breakdown of the codebase and its components:
@@ -108,31 +134,7 @@ Callus/
 
 ---
 
-## 🔍 Architecture
 
-```mermaid
-graph TD
-    subgraph Ingestion_Pipeline [Ingestion Pipeline]
-        PDF[PDF Documents] --> |pypdf| Text[Raw Text]
-        Text --> |Chunking| Chunks[Text Chunks 500 chars]
-        Chunks --> |text-embedding-004| Vectors[Embeddings]
-        Vectors --> |Upsert| Chroma[(ChromaDB)]
-    end
-
-    subgraph RAG_Flow [RAG & Inference]
-        User[User Query] --> |Embed| QVec[Query Vector]
-        QVec --> |Search top-k| Chroma
-        Chroma --> |Retrieve| Context[Relevant Context]
-        Context --> |Prompt| LLM[Gemini 3 Flash]
-        User --> |Prompt| LLM
-        LLM --> |Generate| Answer[Final Answer]
-    end
-    
-    subgraph Agentic_Tools [Tools]
-        LLM -.-> |Function Call| Arxiv[Arxiv API]
-        Arxiv -.-> |Return Papers| LLM
-    end
-```
 
 ### Flow Details
 
