@@ -2,7 +2,7 @@
 
 ![Status](https://img.shields.io/badge/Status-Active-success)
 ![Python](https://img.shields.io/badge/Python-3.11+-blue)
-![Gemini](https://img.shields.io/badge/AI-Gemini%201.5%20Flash-orange)
+![Gemini](https://img.shields.io/badge/AI-Gemini%203%20Flash-orange)
 ![RAG](https://img.shields.io/badge/Architecture-Custom%20RAG-purple)
 
 An enterprise-grade **Retrieval-Augmented Generation (RAG)** AI agent capable of ingesting PDF documents and answering complex queries with citation-backed accuracy. Built using **Google Gemini** and **ChromaDB**.
