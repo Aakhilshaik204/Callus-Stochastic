@@ -123,7 +123,7 @@ graph TD
         User[User Query] --> |Embed| QVec[Query Vector]
         QVec --> |Search top-k| Chroma
         Chroma --> |Retrieve| Context[Relevant Context]
-        Context --> |Prompt| LLM[Gemini 1.5 Flash]
+        Context --> |Prompt| LLM[Gemini 3 Flash]
         User --> |Prompt| LLM
         LLM --> |Generate| Answer[Final Answer]
     end
@@ -145,4 +145,4 @@ graph TD
 ### The Retrieval Flow
 1.  **Query Embedding**: User question is embedded.
 2.  **Vector Search**: System retrieves top 15 most similar chunks from ChromaDB.
-3.  **Synthesis**: Detailed context is fed to Gemini 1.5 Flash to generate a grounded response.
+3.  **Synthesis**: Detailed context is fed to Gemini 3 Flash to generate a grounded response.
