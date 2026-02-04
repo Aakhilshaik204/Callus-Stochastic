@@ -61,17 +61,24 @@ def query_chromadb(query, n_results=15):
     
     return retrieved_chunks, metadatas
 
-def generate_rag_answer(query, retrieved_chunks):
+def generate_rag_answer(query, retrieved_chunks, metadatas):
     """
     Generates an answer using Gemini 1.5 Flash based on retrieved context.
+    Context now includes page numbers.
     """
-    context_str = "\n\n".join(retrieved_chunks)
+    context_parts = []
+    for chunk, meta in zip(retrieved_chunks, metadatas):
+        source = meta.get("source", "Unknown")
+        page = meta.get("page", "?")
+        context_parts.append(f"[Source: {source}, Page: {page}]\n{chunk}")
+    
+    context_str = "\n\n".join(context_parts)
     
     system_instruction = (
         "You are an expert AI Research Assistant. "
         "Answer the user's question based strictly on the provided Context below. "
+        "Always cite the source and page number for your information (e.g. '... [Source: doc.pdf, Page: 5]'). "
         "If the answer is not in the context, say you don't know (or check Arxiv if relevant). "
-        "Always cite the source if possible (from context metadata)."
     )
     
     prompt = (
@@ -81,7 +88,7 @@ def generate_rag_answer(query, retrieved_chunks):
     )
     
     model = genai.GenerativeModel(
-        model_name='gemini-3-flash-preview',
+        model_name='gemini-1.5-flash',
         tools=tools, # Tools can be used if the model decides to ignore context or needs external info
         system_instruction=system_instruction
     )
@@ -106,5 +113,5 @@ def get_rag_response(query):
         # Fallback if DB is empty
         return "I don't have any documents indexed yet. Please upload some PDFs."
         
-    answer = generate_rag_answer(query, chunks)
+    answer = generate_rag_answer(query, chunks, metadatas)
     return answer
