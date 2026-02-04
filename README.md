@@ -108,9 +108,35 @@ Callus/
 
 ---
 
-## 🔍 Architecture Details
+## 🔍 Architecture
 
-### The Ingestion Flow
+```mermaid
+graph TD
+    subgraph Ingestion_Pipeline [Ingestion Pipeline]
+        PDF[PDF Documents] --> |pypdf| Text[Raw Text]
+        Text --> |Chunking| Chunks[Text Chunks 500 chars]
+        Chunks --> |text-embedding-004| Vectors[Embeddings]
+        Vectors --> |Upsert| Chroma[(ChromaDB)]
+    end
+
+    subgraph RAG_Flow [RAG & Inference]
+        User[User Query] --> |Embed| QVec[Query Vector]
+        QVec --> |Search top-k| Chroma
+        Chroma --> |Retrieve| Context[Relevant Context]
+        Context --> |Prompt| LLM[Gemini 1.5 Flash]
+        User --> |Prompt| LLM
+        LLM --> |Generate| Answer[Final Answer]
+    end
+    
+    subgraph Agentic_Tools [Tools]
+        LLM -.-> |Function Call| Arxiv[Arxiv API]
+        Arxiv -.-> |Return Papers| LLM
+    end
+```
+
+### Flow Details
+
+1.  **Ingestion**:
 1.  **PDF Loading**: Uses `pypdf` to extract raw text.
 2.  **Chunking**: Text is split into overlapping chunks of 500 characters.
 3.  **Embedding**: Each chunk is converted into a vector using `text-embedding-004`.
