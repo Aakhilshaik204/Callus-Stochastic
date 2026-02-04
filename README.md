@@ -9,7 +9,7 @@ An enterprise-grade **Retrieval-Augmented Generation (RAG)** AI agent capable of
 
 ## ✨ Key Features
 
--   **Multi-Modal Intelligence**: Leveraging **Gemini 1.5 Flash** for high-speed, cost-effective reasoning.
+-   **Multi-Modal Intelligence**: Leveraging **Gemini 3 Flash** for high-speed, cost-effective reasoning.
 -   **Custom RAG Pipeline**: A specialized ingestion & retrieval system built from scratch without heavy framework dependencies.
     -   **Granular Chunking**: Splits documents into semantic 500-char chunks for precise retrieval.
     -   **Semantic Search**: Uses `models/text-embedding-004` to understand query intent.
