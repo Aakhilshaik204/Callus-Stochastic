@@ -88,7 +88,7 @@ def generate_rag_answer(query, retrieved_chunks, metadatas):
     )
     
     model = genai.GenerativeModel(
-        model_name='gemini-1.5-flash',
+        model_name='gemini-3-flash-preview',
         tools=tools, # Tools can be used if the model decides to ignore context or needs external info
         system_instruction=system_instruction
     )
